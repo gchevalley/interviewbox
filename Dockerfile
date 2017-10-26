@@ -70,4 +70,6 @@ ENV PYTHONPATH=$PYTHON_DIR_PATH:$PY4J_PATH
 
 ENV PATH /$SPARK_HOME/bin:$PATH
 
+RUN (adduser --disabled-password --gecos "" guest && echo "guest:guest"|chpasswd)
+
 EXPOSE 80 8182 8183 8184 8185 8787
