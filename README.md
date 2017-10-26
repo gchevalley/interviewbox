@@ -1,4 +1,5 @@
-# Coding interview based on [cloud9](https://c9.io)
+# Coding interview with [cloud9](https://c9.io) interface
+based on the work of `docker pull kdelfour/cloud9-docker`
 
 ## setup
 - python 3.5 (conda)
@@ -10,4 +11,5 @@
 
 ## jupyter notebook (port `8182`)
 `jupyter notebook password`
+
 `jupyter notebook --allow-root`
