@@ -27,11 +27,22 @@ RUN /opt/conda/bin/pip install -r /setup/req_pip.txt
 
 RUN chmod -R 777 /opt/conda
 
-RUN /opt/conda/bin/conda install -c conda-forge jupyter_contrib_nbextensions 
 RUN /opt/conda/bin/jupyter contrib nbextension install --user
-RUN /opt/conda/bin/jupyter nbextension install --py --sys-prefix widgetsnbextension
-RUN /opt/conda/bin/jupyter nbextension install --py vega
 
 ENV PATH /opt/conda/bin:$PATH
 
-EXPOSE 8182 8183 8184 8185
+RUN \
+  apt-get update && \
+  apt-get install -y software-properties-common && \
+  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+  add-apt-repository -y ppa:webupd8team/java && \
+  apt-get update && \
+  apt-get install -y oracle-java8-installer && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/oracle-jdk8-installer
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+
+ADD jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
+
+EXPOSE 80 8182 8183 8184 8185
