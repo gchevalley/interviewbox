@@ -4,6 +4,7 @@ gensim
 jupyter_contrib_nbextensions
 keras
 matplotlib
+nltk
 notebook
 pandas
 requests

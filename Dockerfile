@@ -29,6 +29,8 @@ RUN chmod -R 777 /opt/conda
 
 RUN /opt/conda/bin/jupyter contrib nbextension install --user
 
+RUN /opt/conda/bin/python -m spacy download en
+
 ENV PATH /opt/conda/bin:$PATH
 
 RUN \
