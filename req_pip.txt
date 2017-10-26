@@ -1,0 +1,14 @@
+beautifulsoup4
+bokeh
+gensim
+jupyter_contrib_nbextensions
+keras
+matplotlib
+notebook
+pandas
+requests
+scikit-learn
+seaborn
+spacy
+statsmodels
+
