@@ -1,6 +1,8 @@
 beautifulsoup4
 bokeh
+django
 findspark
+flask
 gender_guesser
 gensim
 image
