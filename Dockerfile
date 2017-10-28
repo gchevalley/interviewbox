@@ -66,22 +66,27 @@ RUN \
   rm -rf /var/cache/oracle-jdk8-installer
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
+# https://github.com/keopx/docker-elasticsearch
 RUN groupadd -r elasticsearch && useradd --no-log-init -r -g elasticsearch elasticsearch
-ENV ELASTIC_VERSION 5.6.3
-RUN \
-  wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTIC_VERSION}.tar.gz -O ~/elasticsearch-${ELASTIC_VERSION}.tar.gz  && \
-  tar -xvzf ~/elasticsearch-${ELASTIC_VERSION}.tar.gz -C /usr/local/ && \
-  rm ~/elasticsearch-${ELASTIC_VERSION}.tar.gz
-RUN cd /usr/local && ln -s elasticsearch-${ELASTIC_VERSION} elasticsearch
-WORKDIR /usr/local/elasticsearch
+RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+RUN echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list
+RUN apt-get update && apt-get install elasticsearch
 
-RUN set -ex && for path in data logs config config/scripts; do \
-        mkdir -p "$path"; \
-        chown -R elasticsearch:elasticsearch "$path"; \
+ENV PATH /usr/share/elasticsearch/bin:$PATH
+WORKDIR /usr/share/elasticsearch
+RUN set -ex \
+  && for path in \
+    ./data \
+    ./logs \
+    ./config \
+    ./config/scripts \
+    ; do \
+      mkdir -p "$path"; \
+      chown -R elasticsearch:elasticsearch "$path"; \
     done
-COPY elasticsearch.yml /usr/local/elasticsearch/config/
-COPY logging.yml /usr/local/elasticsearch/config/
-ENV PATH=$PATH:/usr/local/elasticsearch/bin
+COPY elasticsearch.yml ./config/elasticsearch.yml
+COPY log4j2.properties ./config/log4j2.properties
+VOLUME /usr/share/elasticsearch/data
 
 RUN \
   echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
