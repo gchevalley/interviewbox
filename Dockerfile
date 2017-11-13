@@ -43,6 +43,7 @@ RUN \
   chown -R mongodb:mongodb /var/lib/mongodb && \
   chown -R mongodb:mongodb /var/log/mongodb && \
   usermod -d /data/db mongodb
+#COPY mongod /etc/init.d
 
 RUN \
   apt-get update && \
